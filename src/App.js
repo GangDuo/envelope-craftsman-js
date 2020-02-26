@@ -13,6 +13,25 @@ const PreviewSchema = Yup.object().shape({
     .length(7, ERR_POSTALCODE_CHARACTERS_LENGTH),
 });
 
+function asHankaku(str) {
+  return str.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+      return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+  });
+}
+
+const fetchAddressByPostalcode = async (postalcode) => {
+  if(postalcode.length !== 7) {
+    return
+  }
+  const response = await fetch(`https://api.zipaddress.net/?zipcode=${postalcode}`, {
+      mode: 'cors'
+  })
+  const json = await response.json();
+
+  if(!json.data || !json.data.fullAddress) return
+  return json.data.fullAddress
+}
+
 function App() {
   const [isPreview, setIsPreview] = React.useState(false);
 
@@ -52,7 +71,24 @@ function App() {
         }, 500);
       }}
     >
-      {({ submitForm, isSubmitting, setFieldValue }) => (
+      {({ submitForm, isSubmitting, setFieldValue }) => {
+        const handleChange = e => {
+          const postalcode = asHankaku(e.target.value)
+          const targetName = e.target.name
+
+          setFieldValue(targetName, postalcode)
+          fetchAddressByPostalcode(postalcode)
+          .then((fullAddress) => {
+            const fieldNameBy = {
+              destinationPostalCode: 'destinationAddress',
+              sourcePostalCode: 'sourceAddress'
+            }
+            if(!fullAddress) return;
+            setFieldValue(fieldNameBy[targetName], fullAddress);
+          });
+        }
+
+        return (
         <Container maxWidth="sm">
         <Form>
           <fieldset>
@@ -63,10 +99,7 @@ function App() {
               justify="flex-start"
               alignItems="flex-start"
             >
-              <Field component={TextField} name="destinationPostalCode" label="〒" InputProps={{ onChange: e => {
-                console.log(e);
-                setFieldValue(e.target.name, e.target.value)
-              }}} />
+              <Field component={TextField} name="destinationPostalCode" label="〒" InputProps={{ onChange: handleChange}} />
               <Field component={TextField} name="destinationAddress" label="住所" fullWidth />
               <Field component={TextField} name="recipientName" label="氏名" />
             </Grid>
@@ -79,7 +112,7 @@ function App() {
                   justify="flex-start"
                   alignItems="flex-start"
             >
-              <Field component={TextField} name="sourcePostalCode" label="〒" />
+              <Field component={TextField} name="sourcePostalCode" label="〒"  InputProps={{ onChange: handleChange}} />
               <Field component={TextField} name="sourceAddress" label="住所" fullWidth />
               <Field component={TextField} name="yourName" label="氏名" />
             </Grid>
@@ -139,7 +172,7 @@ function App() {
           </Button>
         </Form>
         </Container>
-      )}
+      )}}
     </Formik>
   );
 }
