@@ -38,14 +38,20 @@ function App() {
   if(isPreview) {
     return (
       <>
-        <Button
-            variant="contained"
-            color="primary"
-            onClick={e => setIsPreview(false)}
-        >
-          戻る
-        </Button>
-        プレビュー
+        <header>
+          <Button
+              variant="contained"
+              color="primary"
+              onClick={e => setIsPreview(false)}
+          >
+            戻る
+          </Button>
+        </header>
+        <section className="sheet">
+          <article>
+            プレビュー
+          </article>
+        </section>
       </>
     )
   }
