@@ -14,6 +14,23 @@ const PreviewSchema = Yup.object().shape({
 });
 
 function App() {
+  const [isPreview, setIsPreview] = React.useState(false);
+
+  if(isPreview) {
+    return (
+      <>
+        <Button
+            variant="contained"
+            color="primary"
+            onClick={e => setIsPreview(false)}
+        >
+          戻る
+        </Button>
+        プレビュー
+      </>
+    )
+  }
+
   return (
     <Formik
       initialValues={{
@@ -30,7 +47,8 @@ function App() {
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
           setSubmitting(false);
-          alert(JSON.stringify(values, null, 2));
+          setIsPreview(true)
+          console.log(JSON.stringify(values, null, 2));
         }, 500);
       }}
     >
