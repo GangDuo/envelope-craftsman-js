@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button } from '@material-ui/core';
 import PaperPatternGenForm from './components/PaperPatternGenForm';
+import Envelope from './components/Envelope';
 
 function App() {
   const [isPreview, setIsPreview] = React.useState(false);
@@ -17,11 +18,7 @@ function App() {
             戻る
           </Button>
         </header>
-        <section className="sheet">
-          <article>
-            プレビュー
-          </article>
-        </section>
+        <Envelope />
       </>
     )
   }
