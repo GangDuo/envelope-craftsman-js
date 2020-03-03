@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "bc9d4811ba05151058a1cd92c817ab9d",
+    "revision": "78fd523d6d267b7fc564cd11bb19fe58",
     "url": "/envelope-craftsman-js/index.html"
   },
   {

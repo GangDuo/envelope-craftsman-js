@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/envelope-craftsman-js/precache-manifest.9bd59894d27b16e0a46f89a2fb15c0b3.js"
+  "/envelope-craftsman-js/precache-manifest.d3db0cf406baa297e951813753f8a2e6.js"
 );
 
 self.addEventListener('message', (event) => {
