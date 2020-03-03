@@ -4,6 +4,8 @@ import PaperPatternGenForm from './components/PaperPatternGenForm';
 import Envelope from './components/Envelope';
 import ResponsiveDrawer from './components/ResponsiveDrawer';
 
+const categories = [{text: 'ライセンス', handleClick: (e) => alert('clicked')}]
+
 function App() {
   const [isPreview, setIsPreview] = React.useState(false);
 
@@ -25,7 +27,7 @@ function App() {
   }
 
   return (
-    <ResponsiveDrawer container={
+    <ResponsiveDrawer categories={categories} container={
       <PaperPatternGenForm onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
           setSubmitting(false);

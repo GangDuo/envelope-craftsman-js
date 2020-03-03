@@ -49,7 +49,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function ResponsiveDrawer(props) {
-  const categories = [{text: 'ライセンス', handleClick: (e) => alert('clicked')}]
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -59,7 +58,7 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <List>
-        {categories.map((category, index) => (
+        {props.categories.map((category, index) => (
           <ListItem button key={index} onClick={category.handleClick}>
             <ListItemText primary={category.text} />
           </ListItem>
@@ -132,6 +131,7 @@ function ResponsiveDrawer(props) {
 
 ResponsiveDrawer.propTypes = {
   container: PropTypes.object,
+  categories: PropTypes.array,
 };
 
 export default ResponsiveDrawer;
