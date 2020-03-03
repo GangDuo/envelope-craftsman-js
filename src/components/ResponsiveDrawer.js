@@ -82,7 +82,7 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Responsive drawer
+            {props.title}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -132,6 +132,7 @@ function ResponsiveDrawer(props) {
 ResponsiveDrawer.propTypes = {
   container: PropTypes.object,
   categories: PropTypes.array,
+  title: PropTypes.string,
 };
 
 export default ResponsiveDrawer;

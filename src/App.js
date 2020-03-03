@@ -38,7 +38,7 @@ function App() {
 
   return (
     <>
-      <ResponsiveDrawer categories={categories} container={
+      <ResponsiveDrawer title={document.title} categories={categories} container={
         <PaperPatternGenForm onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
             setSubmitting(false);
