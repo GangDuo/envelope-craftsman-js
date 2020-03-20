@@ -4,6 +4,11 @@ import { Container, Button, LinearProgress, FormControlLabel, Radio, Grid } from
 import { TextField, RadioGroup } from 'formik-material-ui';
 import * as Yup from 'yup';
 
+const logotypeImagesBy = {
+  "メルカリ": `${process.env.PUBLIC_URL}/mercari_logo_vertical.svg`,
+  "ラクマ": `${process.env.PUBLIC_URL}/Rakuma-appicon.png`
+}
+
 const ERR_POSTALCODE_CHARACTERS_LENGTH = '郵便番号は正確に7文字でなければなりません。'
 
 const PreviewSchema = Yup.object().shape({
@@ -43,7 +48,8 @@ function PaperPatternGenForm({ onSubmit }) {
         sourceAddress: '',
         yourName: '',
         direction: '縦',
-        sizeOfPaper: 'A4'
+        sizeOfPaper: 'A4',
+        logotype: 'なし'
       }}
       validationSchema={PreviewSchema}
       onSubmit={onSubmit}
@@ -136,6 +142,31 @@ function PaperPatternGenForm({ onSubmit }) {
               </Grid>
             </Field>
           </fieldset>
+
+          <fieldset>
+            <legend>ロゴ</legend>
+            <Field component={RadioGroup} name="logotype">
+              <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="flex-start"
+              >
+              {
+                ['なし', 'メルカリ', 'ラクマ']
+                .map((x, i) => <FormControlLabel key={i}
+                                                onChange={e => {
+                                                  setFieldValue(`logotypeImage`, logotypeImagesBy[e.target.value])              
+                                                }}
+                                                control={<Radio disabled={isSubmitting} />}
+                                                value={x}
+                                                label={x}
+                                                disabled={isSubmitting}/>)
+              }
+              </Grid>
+            </Field>
+          </fieldset>
+          <input type="hidden" name="logotypeImage" />
 
           {isSubmitting && <LinearProgress />}
           <br />
