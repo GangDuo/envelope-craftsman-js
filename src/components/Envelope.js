@@ -11,6 +11,8 @@ function Envelope(props) {
     <>
       <section className="sheet">
         <article>
+          <span className="logo" />
+
           <span className="horizontal-line top-horizontal-line"></span>
           <span className="horizontal-line bottom-horizontal-line"></span>
           <span className="vertical-line left-vertical-line"></span>
@@ -44,6 +46,19 @@ function Envelope(props) {
       </section>
 
       <style jsx>{`
+.logo {
+  position: absolute;
+  top: 73.447mm;
+  left: 15.616mm;
+  width: 220mm;
+  height: 40mm;
+  background-image: url("${props.logo}");
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform-origin: left bottom;
+  transform: translateY(-100%) rotate(64.9deg);
+}
+
 .list {
   display: flex;
   flex-direction: column;
@@ -228,6 +243,7 @@ function Envelope(props) {
 Envelope.defaultProps = {
   recipient: new ContactInfo(),
   sender: new ContactInfo(),
+  logo: `${process.env.PUBLIC_URL}/empty.gif`,
 };
 
 export default Envelope;
