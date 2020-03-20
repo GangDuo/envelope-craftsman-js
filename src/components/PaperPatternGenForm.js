@@ -3,6 +3,12 @@ import { Formik, Form, Field } from 'formik';
 import { Container, Button, LinearProgress, FormControlLabel, Radio, Grid } from '@material-ui/core';
 import { TextField, RadioGroup } from 'formik-material-ui';
 import * as Yup from 'yup';
+import {DropzoneArea} from 'material-ui-dropzone'
+
+const logotypeImagesBy = {
+  "メルカリ": `${process.env.PUBLIC_URL}/mercari_logo_vertical.svg`,
+  "ラクマ": `${process.env.PUBLIC_URL}/Rakuma-appicon.png`
+}
 
 const ERR_POSTALCODE_CHARACTERS_LENGTH = '郵便番号は正確に7文字でなければなりません。'
 
@@ -33,6 +39,8 @@ const fetchAddressByPostalcode = async (postalcode) => {
 }
 
 function PaperPatternGenForm({ onSubmit }) {
+  const [isEnableCustomLogo, setIsEnableCustomLogo] = React.useState(false);
+
   return (
     <Formik
       initialValues={{
@@ -43,7 +51,8 @@ function PaperPatternGenForm({ onSubmit }) {
         sourceAddress: '',
         yourName: '',
         direction: '縦',
-        sizeOfPaper: 'A4'
+        sizeOfPaper: 'A4',
+        logotype: 'なし'
       }}
       validationSchema={PreviewSchema}
       onSubmit={onSubmit}
@@ -136,6 +145,38 @@ function PaperPatternGenForm({ onSubmit }) {
               </Grid>
             </Field>
           </fieldset>
+
+          <fieldset>
+            <legend>ロゴ</legend>
+            <Field component={RadioGroup} name="logotype">
+              <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="flex-start"
+              >
+              {
+                ['なし', 'メルカリ', 'ラクマ', 'カスタムロゴ']
+                .map((x, i) => <FormControlLabel key={i}
+                                                onChange={e => {
+                                                  setIsEnableCustomLogo(e.target.value === 'カスタムロゴ')
+                                                  setFieldValue(`logotypeImage`, logotypeImagesBy[e.target.value])              
+                                                }}
+                                                control={<Radio disabled={isSubmitting} />}
+                                                value={x}
+                                                label={x}
+                                                disabled={isSubmitting}/>)
+              }
+              </Grid>
+            </Field>
+            {isEnableCustomLogo &&
+              <Field component={DropzoneArea} acceptedFiles={['image/*']} filesLimit={1} onChange={e => {
+                const fileblob = URL.createObjectURL(e[0])
+                setFieldValue('logotypeImage', fileblob)
+              }} />
+            }
+          </fieldset>
+          <input type="hidden" name="logotypeImage" />
 
           {isSubmitting && <LinearProgress />}
           <br />

@@ -56,7 +56,7 @@ function App() {
             戻る
           </Button>
         </header>
-        <Envelope {...asContactInfo(context)} />
+        <Envelope {...asContactInfo(context)} logo={context.logotypeImage} />
       </>
     )
   }
