@@ -1,6 +1,12 @@
 import * as React from 'react';
+import ContactInfo from '../components/ContactInfo'
 
-function Envelope() {
+function Envelope(props) {
+  const entries = {
+    recipient: props.recipient,
+    sender: props.sender
+  }
+
   return (
     <>
       <section className="sheet">
@@ -22,10 +28,69 @@ function Envelope() {
           <span className="comment" id="comment2">↑↑折り線-2</span>
           <span className="comment" id="comment3">↑↑折り線-3</span>
           <span className="comment" id="comment6">↑↑折り線-6</span>
+
+          {
+            Object.keys(entries).map(x => (
+              <div key={x} className={`list ${x}`}>
+                <span className="postal-code">{entries[x].postalCode}</span>
+                <span className="address">{entries[x].address1}</span>
+                <span className="address">{entries[x].address2}</span>
+                <span className="company">{entries[x].company}</span>
+                <span className="full-name">{entries[x].fullname}</span>
+              </div>
+            ))
+          }
         </article>
       </section>
 
       <style jsx>{`
+.list {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+.list span + span {
+  margin-top: 0.5rem;
+}
+.address + .address {
+  margin-left: 1rem;
+}
+
+/* 受取人 */
+.recipient {
+  position: absolute;
+  top: 200px;
+  left: 50%;
+  transform-origin: top left;
+  transform: rotate(64.9deg);
+}
+.recipient .postal-code {
+  letter-spacing: 15px;
+}
+.recipient .address {
+  font-size: 1.5rem;
+}
+.recipient .full-name {
+  font-size: 2rem;
+}
+
+/* 差出人 */
+.sender {
+  position: absolute;
+  bottom: 20%;
+  left: 310px;
+  transform-origin: bottom left;
+  transform: rotate(-115.1deg);
+}
+.sender .postal-code {
+  letter-spacing: 3px;
+}
+.sender span.full-name:last-of-type {
+  letter-spacing: 0.8rem;
+  font-size: 1.5rem;
+  text-align: right;
+}
+
 /* 封筒型紙 */
 .horizontal-line,
 .vertical-line {
@@ -159,5 +224,10 @@ function Envelope() {
     </>
   )
 }
+
+Envelope.defaultProps = {
+  recipient: new ContactInfo(),
+  sender: new ContactInfo(),
+};
 
 export default Envelope;
